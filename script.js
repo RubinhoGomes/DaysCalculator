@@ -78,24 +78,35 @@ const countDays = async (data, promiseHolidays) => {
   console.log(days, totalTimeWorked);
 
   return {
-    'days': days,
-    'totalHours': totalTimeWorked
+    days: days,
+    hours: totalTimeWorked
   };
 
 }
 
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   data = {
-    'startDate': '2025-04-07',
-    'endDate': '2025-07-24',
+    'startDate': '2025-01-01',
+    'endDate': '2025-12-31',
     'startTime': 09,
     'endTime': 18,
     'pauseDuration': 1
   };
 
   const holidays = getHolidays(data);
+ 
+  let variable = await countDays(data, holidays);
+
+  console.log(variable);
+
+  const paragraph = document.createElement("p");
   
-  console.log(countDays(data, holidays))
+  paragraph.appendChild(document.createTextNode("Dias: " + variable.days));
+  document.body.appendChild(paragraph);
+
+  paragraph.appendChild(document.createTextNode(" Horas: " + variable.hours));
+  document.body.appendChild(paragraph);
 
 });
+
