@@ -36,7 +36,6 @@ const getHolidays = async (data) => {
 
 };
 
-
 // @param: data => array, promiseHolidays => promise
 // @brief: This function is to count the days between two dates and remove te holidays to calculate the workdays
 // TODO: Implement the countDays to ignore the weekends not the holidays alone
@@ -84,29 +83,50 @@ const countDays = async (data, promiseHolidays) => {
 
 }
 
+const isEmpty = (data) => {
+  return (data == '' || data == null || data == undefined)
+}
+
 
 document.addEventListener("DOMContentLoaded", async () => {
-  data = {
-    'startDate': '2025-01-01',
-    'endDate': '2025-12-31',
-    'startTime': 09,
-    'endTime': 18,
-    'pauseDuration': 1
-  };
 
-  const holidays = getHolidays(data);
- 
-  let variable = await countDays(data, holidays);
+  const calculateBtn = document.querySelector("#calculateDays");
 
-  console.log(variable);
+  calculateBtn.addEventListener("click", async () => {
+    
+    let startDate = document.querySelector("#startDate").value;
+    let endDate = document.querySelector("#endDate").value;
+    let isTimeChecked = document.querySelector('#timeCheck').checked;
 
-  const paragraph = document.createElement("p");
-  
-  paragraph.appendChild(document.createTextNode("Dias: " + variable.days));
-  document.body.appendChild(paragraph);
+    if(isEmpty(startDate) || isEmpty(endDate)) {
+      alert('Preencha a data do inicio e fim');
+      return;
+    }
 
-  paragraph.appendChild(document.createTextNode(" Horas: " + variable.hours));
-  document.body.appendChild(paragraph);
+    data = {
+      'startDate': startDate,
+      'endDate': endDate,
+      'startTime': 00,
+      'endTime': 00,
+      'pauseDuration': 0,
+      'isTimeChecked': isTimeChecked,
+      'isSalaryChecked': false // isSalaryChecked
+    };
+
+    const holidays = getHolidays(data);
+
+    let variable = await countDays(data, holidays);
+
+    console.log(variable);
+
+    const paragraph = document.createElement("p");
+
+    paragraph.appendChild(document.createTextNode("Dias: " + variable.days));
+    document.body.appendChild(paragraph);
+
+    paragraph.appendChild(document.createTextNode(" Horas: " + variable.hours));
+    document.body.appendChild(paragraph);
+
+  });
 
 });
-
