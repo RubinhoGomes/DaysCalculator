@@ -21,6 +21,8 @@ const getHolidays = async (data) => {
       throw new Error(`Response status: ${response.status}`);
     }
 
+    console.log(response);
+
     const json = await response.json();
     console.log(json);
     json.forEach(holiday => {
@@ -41,24 +43,27 @@ const getHolidays = async (data) => {
 // TODO: Implement the countDays to ignore the weekends not the holidays alone
 // Implement probably the getDay with the days diff. This way you go trough all the "days known" and decrement the weekends
 const countDays = async (data, promiseHolidays) => {
-  let days = 0;
-
   let dataStart = new Date(data.startDate);
   let dataEnd = new Date(data.endDate);
+  let sameDate = data.isSameDate;
+  let isTimeChecked = data.isTimeChecked;
   let timeStart = data.startTime;
   let timeEnd = data.endTime;
-  let timeDiff = (timeEnd - timeStart) - data.pauseDuration;
-  let daysDiff = dataEnd - dataStart;
   let totalTimeWorked = 0;
-  days = daysDiff / (1000 * 3600 * 24); 
+  let timeDiff = (timeEnd - timeStart) - data.pauseDuration;
+  let daysDiff = (dataEnd - dataStart);
+
+  let days = daysDiff / (1000 * 3600 * 24); 
+ 
 
   const holidays = await promiseHolidays;
 
-  console.log(holidays);
-
-  holidays.forEach(holiday => {
-    days--;
-  });
+  
+  if(!isEmpty(holidays)) {
+    holidays.forEach(holiday => {
+      days--;
+    });
+  }
  
   for (let i = days; i >= 0; i--){
     let currentDate = new Date(dataStart);
@@ -72,7 +77,7 @@ const countDays = async (data, promiseHolidays) => {
     }
   }
   
-  totalTimeWorked = days * timeDiff;
+  totalTimeWorked = isTimeChecked == false ? 0 : days * timeDiff;
 
   console.log(days, totalTimeWorked);
 
@@ -84,7 +89,7 @@ const countDays = async (data, promiseHolidays) => {
 }
 
 const isEmpty = (data) => {
-  return (data == '' || data == null || data == undefined)
+  return (data == '' || data == null || data == undefined || data.lenght == 0 )
 }
 
 
@@ -109,6 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       'startTime': 00,
       'endTime': 00,
       'pauseDuration': 0,
+      'isSameDate': (startDate == endDate),
       'isTimeChecked': isTimeChecked,
       'isSalaryChecked': false // isSalaryChecked
     };
@@ -124,8 +130,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     paragraph.appendChild(document.createTextNode("Dias: " + variable.days));
     document.body.appendChild(paragraph);
 
-    paragraph.appendChild(document.createTextNode(" Horas: " + variable.hours));
-    document.body.appendChild(paragraph);
+    if (isTimeChecked) {
+      paragraph.appendChild(document.createTextNode(" Horas: " + variable.hours));
+      document.body.appendChild(paragraph);
+    }
 
   });
 
