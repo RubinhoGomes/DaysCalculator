@@ -21,8 +21,6 @@ const getHolidays = async (data) => {
       throw new Error(`Response status: ${response.status}`);
     }
 
-    console.log(response);
-
     const json = await response.json();
     console.log(json);
     json.forEach(holiday => {
@@ -65,16 +63,18 @@ const countDays = async (data, promiseHolidays) => {
     });
   }
  
-  for (let i = days; i >= 0; i--){
-    let currentDate = new Date(dataStart);
-    currentDate.setDate(currentDate.getDate() + i);
 
-    // console.log(currentDate); To see the current date being checked
+  if(!sameDate) {
+    for (let i = days; i >= 0; i--){
+      let currentDate = new Date(dataStart);
+      currentDate.setDate(currentDate.getDate() + i);
 
-    // Check if the current date is a weekend (Saturday or Sunday)
-    if (currentDate.getDay() == 0 || currentDate.getDay() == 6) {
-      days--;
+      if (currentDate.getDay() == 0 || currentDate.getDay() == 6) {
+        days--;
+      }
     }
+  } else  {
+    days++;
   }
   
   totalTimeWorked = isTimeChecked == false ? 0 : days * timeDiff;
@@ -92,7 +92,6 @@ const isEmpty = (data) => {
   return (data == '' || data == null || data == undefined || data.lenght == 0 )
 }
 
-
 document.addEventListener("DOMContentLoaded", async () => {
 
   const calculateBtn = document.querySelector("#calculateDays");
@@ -101,12 +100,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     let startDate = document.querySelector("#startDate").value;
     let endDate = document.querySelector("#endDate").value;
+
     let isTimeChecked = document.querySelector('#timeCheck').checked;
+    let startTime = document.querySelector("#startTime").value;
+    let endTime = document.querySelector("#endTime").value;
 
     if(isEmpty(startDate) || isEmpty(endDate)) {
       alert('Preencha a data do inicio e fim');
       return;
     }
+
+    if(isTimeChecked && (isEmpty() || isEmpty()))
 
     data = {
       'startDate': startDate,
@@ -114,7 +118,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       'startTime': 00,
       'endTime': 00,
       'pauseDuration': 0,
-      'isSameDate': (startDate == endDate),
+      'isSameDate': (startDate === endDate),
       'isTimeChecked': isTimeChecked,
       'isSalaryChecked': false // isSalaryChecked
     };
@@ -122,8 +126,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const holidays = getHolidays(data);
 
     let variable = await countDays(data, holidays);
-
-    console.log(variable);
 
     const paragraph = document.createElement("p");
 
