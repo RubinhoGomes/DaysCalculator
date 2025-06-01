@@ -63,7 +63,6 @@ const countDays = async (data, promiseHolidays) => {
     });
   }
  
-
   if(!sameDate) {
     for (let i = days; i >= 0; i--){
       let currentDate = new Date(dataStart);
@@ -104,20 +103,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     let isTimeChecked = document.querySelector('#timeCheck').checked;
     let startTime = document.querySelector("#startTime").value;
     let endTime = document.querySelector("#endTime").value;
+    let pauseInterval = document.querySelector("#pauseDuration").value;
 
     if(isEmpty(startDate) || isEmpty(endDate)) {
       alert('Preencha a data do inicio e fim');
       return;
     }
 
-    if(isTimeChecked && (isEmpty() || isEmpty()))
+    if(isTimeChecked && (isEmpty(startTime) || isEmpty(endTime))){
+      alert('Preencha o tempo do inicio e fim do seu horario')
+      return;
+    }
 
     data = {
       'startDate': startDate,
       'endDate': endDate,
-      'startTime': 00,
-      'endTime': 00,
-      'pauseDuration': 0,
+      'startTime': isTimeChecked ? startTime : 00,
+      'endTime': isTimeChecked ? endTime : 00,
+      'pauseDuration': isTimeChecked ? pauseInterval : 00,
       'isSameDate': (startDate === endDate),
       'isTimeChecked': isTimeChecked,
       'isSalaryChecked': false // isSalaryChecked
