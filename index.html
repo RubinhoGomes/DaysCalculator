@@ -63,11 +63,11 @@ document.querySelector('#timeCheck').addEventListener("change", function() {
 
   isChecked = this.checked;
 
-  console.log(isChecked);
-
+  // Enable or disable the start time and label
   document.querySelector('#startTime').style.display = isChecked ? 'block' : 'none';
   document.querySelector('#startTimeLabel').style.display = isChecked ? 'block' : 'none';
 
+  // Enable or disable the end time and label
   document.querySelector('#endTime').style.display = isChecked ? 'block' : 'none';
   document.querySelector('#endTimeLabel').style.display = isChecked ? 'block' : 'none';
 
