@@ -13,6 +13,7 @@ const getHolidays = async (data) => {
   const requestUrl = `https://openholidaysapi.org/PublicHolidays?countryIsoCode=${countryCode}&validFrom=${startDate}&validTo=${endDate}&languageIsoCode=${countryCode}&subdivisionCode={subDivisionCode}`
 
   let holidays = [];
+  let holidaysInfo = [];
   let i = 0;
 
  try {
@@ -25,10 +26,14 @@ const getHolidays = async (data) => {
     console.log(json);
     json.forEach(holiday => {
       holidays[i] = holiday.startDate;
-      i++;
+      holidaysInfo[i] = {
+        'name': holiday.name,
+        'date': holiday.startDate,
+        'subDivision': subDivisionCode
+      }
     });
 
-    return holidays;
+    return [holidays, holidaysInfo];
 
   } catch (error) {
     console.error(error.message);
@@ -76,7 +81,7 @@ const countDays = async (data, promiseHolidays) => {
     days++;
   }
   
-  totalTimeWorked = isTimeChecked == false ? 0 : days * timeDiff;
+  totalTimeWorked = days * timeDiff;
 
   console.log(days, totalTimeWorked);
 
@@ -100,6 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let startDate = document.querySelector("#startDate").value;
     let endDate = document.querySelector("#endDate").value;
 
+    let isSalaryChecked = document.querySelector('#salaryCheck').checked;
     let isTimeChecked = document.querySelector('#timeCheck').checked;
     let startTime = document.querySelector("#startTime").value;
     let endTime = document.querySelector("#endTime").value;
@@ -115,18 +121,29 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
+    if(isSalaryChecked && isEmpty(salary)) {
+      alert('Preencha o salario');
+      return;
+    }
+
+    console.log("Start Time: " + startTime);
+    console.log("End Time: " + endTime);
+
     data = {
       'startDate': startDate,
       'endDate': endDate,
-      'startTime': isTimeChecked ? startTime : 00,
-      'endTime': isTimeChecked ? endTime : 00,
+      'startTime': isTimeChecked ? startTime : '00:00',
+      'endTime': isTimeChecked ? endTime : '00:00',
       'pauseDuration': isTimeChecked ? pauseInterval : 00,
       'isSameDate': (startDate === endDate),
       'isTimeChecked': isTimeChecked,
       'isSalaryChecked': false // isSalaryChecked
     };
 
-    const holidays = getHolidays(data);
+    const [holidays, holidaysInfo] = await getHolidays(data);
+
+    console.log("Holidays: ", holidays);
+    console.log("Holidays Info: ", holidaysInfo);
 
     let variable = await countDays(data, holidays);
 

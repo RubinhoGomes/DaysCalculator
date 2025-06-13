@@ -44,6 +44,13 @@
 
       </div>
 
+    <div class="row">
+      <div class="col-lg-4 m-2">
+        <label for="salary" id="salaryLabel" style="display: none">Salary</label>
+        <input type="number" class="form-control" id="salary" placeholder="Salary" style="display: none">
+      </div>
+    </div>
+
     <div class="form-check m-2">
       <input class="form-check-input" type="checkbox" id="timeCheck">
       <label class="form-check-label" for="timeCheck">
@@ -88,6 +95,17 @@ document.querySelector('#timeCheck').addEventListener("change", function() {
   // Enable or disable the interval
   document.querySelector('#pauseDuration').style.display = isChecked ? 'block' : 'none';
   document.querySelector('#pauseDurationLabel').style.display = isChecked ? 'block' : 'none';
+
+});
+
+
+document.querySelector('#salaryCheck').addEventListener("change", function() {
+
+  isChecked = this.checked;
+
+  // Enable or disable the salary input
+  document.querySelector('#salary').style.display = isChecked ? 'block' : 'none';
+  document.querySelector('#salaryLabel').style.display = isChecked ? 'block' : 'none';
 
 });
 
