@@ -28,8 +28,8 @@ const getHolidays = async (data) => {
       holidays[i] = holiday.startDate;
       holidaysInfo[i] = {
         'name': holiday.name,
-        'date': holiday.startDate,
-        'subDivision': subDivisionCode
+        'startDate': holiday.startDate,
+        'startDate': holiday.endDate,
       }
     });
 
@@ -50,14 +50,17 @@ const countDays = async (data, promiseHolidays) => {
   let dataEnd = new Date(data.endDate);
   let sameDate = data.isSameDate;
   let isTimeChecked = data.isTimeChecked;
-  let timeStart = data.startTime;
-  let timeEnd = data.endTime;
+  let timeStart = new Date(data.startDate + '' + data.startTime);
+  let timeEnd = new Date(data.endDate + '' + data.endTime);
   let totalTimeWorked = 0;
-  let timeDiff = (timeEnd - timeStart) - data.pauseDuration;
+  let hourDiff = (timeEnd.getHours() - timeStart.getHours());
+  let minutesDiff = (timeEnd.getMinutes() - timeStart.getMinutes());
   let daysDiff = (dataEnd - dataStart);
 
   let days = daysDiff / (1000 * 3600 * 24); 
  
+  let timeDiff = ((hourDiff * 60) + minutesDiff) / 60;
+  console.log(hourDiff, minutesDiff, timeDiff);
 
   const holidays = await promiseHolidays;
 
@@ -77,9 +80,9 @@ const countDays = async (data, promiseHolidays) => {
         days--;
       }
     }
-  } else  {
-    days++;
   }
+
+  days++;
   
   totalTimeWorked = days * timeDiff;
 
@@ -126,9 +129,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    console.log("Start Time: " + startTime);
-    console.log("End Time: " + endTime);
-
     data = {
       'startDate': startDate,
       'endDate': endDate,
@@ -150,11 +150,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const paragraph = document.createElement("p");
 
     paragraph.appendChild(document.createTextNode("Dias: " + variable.days));
-    document.body.appendChild(paragraph);
+    document.querySelector("#resultContainer").appendChild(paragraph);
 
     if (isTimeChecked) {
       paragraph.appendChild(document.createTextNode(" Horas: " + variable.hours));
-      document.body.appendChild(paragraph);
+      document.querySelector("#resultContainer").appendChild(paragraph);
     }
 
   });
