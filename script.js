@@ -50,17 +50,18 @@ const countDays = async (data, promiseHolidays) => {
   let dataEnd = new Date(data.endDate);
   let sameDate = data.isSameDate;
   let isTimeChecked = data.isTimeChecked;
-  let timeStart = new Date(data.startDate + '' + data.startTime);
-  let timeEnd = new Date(data.endDate + '' + data.endTime);
+  let isSalaryChecked = data.isSalaryChecked;
+  let timeStart = new Date(data.startDate + 'T' + data.startTime);
+  let timeEnd = new Date(data.endDate + 'T' + data.endTime);
   let totalTimeWorked = 0;
   let hourDiff = (timeEnd.getHours() - timeStart.getHours());
   let minutesDiff = (timeEnd.getMinutes() - timeStart.getMinutes());
   let daysDiff = (dataEnd - dataStart);
+  let salary = data.salary ? data.salary : 0;
 
   let days = daysDiff / (1000 * 3600 * 24); 
  
   let timeDiff = ((hourDiff * 60) + minutesDiff) / 60;
-  console.log(hourDiff, minutesDiff, timeDiff);
 
   const holidays = await promiseHolidays;
 
@@ -87,10 +88,12 @@ const countDays = async (data, promiseHolidays) => {
   totalTimeWorked = days * timeDiff;
 
   console.log(days, totalTimeWorked);
+  console.log(salary);
 
   return {
     days: days,
-    hours: totalTimeWorked
+    hours: totalTimeWorked,
+    salary: (salary * totalTimeWorked),
   };
 
 }
@@ -113,6 +116,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let startTime = document.querySelector("#startTime").value;
     let endTime = document.querySelector("#endTime").value;
     let pauseInterval = document.querySelector("#pauseDuration").value;
+    let salaryValue = document.querySelector("#salary").value;
 
     if(isEmpty(startDate) || isEmpty(endDate)) {
       alert('Preencha a data do inicio e fim');
@@ -137,7 +141,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       'pauseDuration': isTimeChecked ? pauseInterval : 00,
       'isSameDate': (startDate === endDate),
       'isTimeChecked': isTimeChecked,
-      'isSalaryChecked': false // isSalaryChecked
+      'isSalaryChecked': isSalaryChecked, // isSalaryChecked
+      'salary': salaryValue // isSalaryChecked
     };
 
     const [holidays, holidaysInfo] = await getHolidays(data);
@@ -146,16 +151,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("Holidays Info: ", holidaysInfo);
 
     let variable = await countDays(data, holidays);
+    let timestamp = new Date().toLocaleString();
 
-    const paragraph = document.createElement("p");
-
-    paragraph.appendChild(document.createTextNode("Dias: " + variable.days));
-    document.querySelector("#resultContainer").appendChild(paragraph);
+    document.querySelector("#resultContainer").appendChild(document.createTextNode(timestamp + " Dias: " + variable.days));
 
     if (isTimeChecked) {
-      paragraph.appendChild(document.createTextNode(" Horas: " + variable.hours));
-      document.querySelector("#resultContainer").appendChild(paragraph);
+      document.querySelector("#resultContainer").appendChild(document.createTextNode(" Horas: " + variable.hours));
     }
+
+
+    if (isSalaryChecked) {
+      document.querySelector("#resultContainer").appendChild(document.createTextNode(" Salario: " + variable.salary));
+    }
+
+    document.querySelector("#resultContainer").appendChild(document.createElement("br"));
 
   });
 
