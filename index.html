@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,79 +10,148 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 
     <script src="./script.js" defer></script>
+<style>
+[data-bs-theme="dark"] {
+      --custom-text-color: #e0e0e0; /* Brighter light text for better contrast in dark mode */
+      --bs-body-bg: #212529;
+      --bs-navbar-bg: #343a40;
+      --bs-navbar-color: #e0e0e0;
+      --bs-navbar-brand-color: #e0e0e0;
+      --bs-container-bg: #343a40; /* Container background in dark mode */
+      --bs-text-color: #ffffff; /* Default text color in dark mode */
+      --bs-heading-color: #ffffff; /* Default color in dark mode */
+    }
+[data-bs-theme="light"] {
+      --custom-text-color: #212529; /* Dark text for light mode */
+      --bs-navbar-brand-color: #212529;
+      --bs-container-bg: #ffffff; /* Container background in light mode */
+    }
+    .navbar {
+      background-color: var(--bs-navbar-bg) !important;
+    }
+    .navbar-brand {
+      color: var(--bs-navbar-brand-color) !important;
+    }
+    .custom-container {
+      background-color: var(--bs-container-bg) !important;
+      color: var(--custom-text-color) !important; /* Use custom text color */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .custom-container h1,
+    .custom-container h2,
+    .custom-container p,
+    .custom-container label,
+    .custom-container .form-check-label,
+    .custom-container button {
+      color: var(--custom-text-color) !important; /* Apply to all text elements */
+      text-shadow: 0 0 1px rgba(0, 0, 0, 0.2); /* Optional subtle shadow for readability */
+    }
+    .form-control,
+    .form-control::placeholder {
+      color: var(--custom-text-color) !important; /* Ensure input text and placeholders match */
+      background-color: #ffffff !important; /* Ensure inputs are readable */
+      opacity: 0.9; /* Slight opacity for placeholder to differentiate from entered text */
+    }
+    button {
+      text-shadow: 0 0 1px rgba(0, 0, 0, 0.2); /* Subtle shadow for button text */
+    }    
+    </style>
 
-</head>
+  </head>
 <body>
 
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">Days Calculator</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <button class="btn btn-outline-secondary" id="themeToggle" aria-label="Toggle theme">
+                <span id="themeIcon">🌙</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End of Navbar -->
+
+
     <div class="container"
-          style="max-width: 800px; margin-top: 50px; margin-bottom: 50px; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); background-color: #f8f9fa;">
+      style="max-width: 800px; margin-top: 50px; margin-bottom: 50px; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
 
       <h1 class="text-center">Days Calculator</h1>
-          <div class="row">
-            <div class="col-lg-4 m-2">
-              <label for="startDate">Start Date</label>
-              <input type="date" class="form-control" id="startDate" placeholder="Start Date">
-            </div>
+      <div class="row">
+        <div class="col-lg-4 m-2">
+          <label for="startDate">Start Date</label>
+          <input type="date" class="form-control" id="startDate" placeholder="Start Date">
+        </div>
 
-            <div class="col-lg-4 m-2">
-              <label for="endDate">End Date</label>
-              <input type="date" class="form-control" id="endDate" placeholder="End Date">
-            </div>
-          </div>
+        <div class="col-lg-4 m-2">
+          <label for="endDate">End Date</label>
+          <input type="date" class="form-control" id="endDate" placeholder="End Date">
+        </div>
+      </div>
 
-            <div class="row">
-              <div class="col-lg-3 m-2">
-                <label for="startTime" id="startTimeLabel" style="display: none">Start Time</label>
-                <input type="time" class="form-control" id="startTime" placeholder="Start Time" style="display: none">
-              </div>
+      <div class="row">
+        <div class="col-lg-3 m-2">
+          <label for="startTime" id="startTimeLabel" style="display: none">Start Time</label>
+          <input type="time" class="form-control" id="startTime" placeholder="Start Time" style="display: none">
+        </div>
 
-              <div class="col-lg-3 m-2">
-                <label for="endTime" style="display: none" id="endTimeLabel">End Time</label>
-                <input type="time" class="form-control" id="endTime" placeholder="End Time" style="display: none">
-              </div>
+        <div class="col-lg-3 m-2">
+          <label for="endTime" style="display: none" id="endTimeLabel">End Time</label>
+          <input type="time" class="form-control" id="endTime" placeholder="End Time" style="display: none">
+        </div>
 
-              <div class="col-lg-3 m-2">
-                <label for="pauseDuration" style="display: none" id="pauseDurationLabel">Pause Duration</label>
-                <input type="number" class="form-control" id="pauseDuration" placeholder="Pause Duration" style="display: none">
-              </div>
+        <div class="col-lg-3 m-2">
+          <label for="pauseDuration" style="display: none" id="pauseDurationLabel">Pause Duration</label>
+          <input type="number" class="form-control" id="pauseDuration" placeholder="Pause Duration" style="display: none">
+        </div>
 
-            </div>
+      </div>
 
-          <div class="row">
-            <div class="col-lg-4 m-2">
-              <label for="salary" id="salaryLabel" style="display: none">Salary</label>
-              <input type="number" class="form-control" id="salary" placeholder="Salary" style="display: none">
-            </div>
-          </div>
+      <div class="row">
+        <div class="col-lg-4 m-2">
+          <label for="salary" id="salaryLabel" style="display: none">Salary</label>
+          <input type="number" class="form-control" id="salary" placeholder="Salary" style="display: none">
+        </div>
+      </div>
 
-          <div class="form-check m-2">
-            <input class="form-check-input" type="checkbox" id="timeCheck">
-            <label class="form-check-label" for="timeCheck">
-              Do you want to calculate the time?
-            </label>
-          </div>
+      <div class="form-check m-2">
+        <input class="form-check-input" type="checkbox" id="timeCheck">
+        <label class="form-check-label" for="timeCheck">
+          Do you want to calculate the time?
+        </label>
+      </div>
 
-          <div class="form-check m-2">
-            <input class="form-check-input" type="checkbox" id="salaryCheck">
-            <label class="form-check-label" for="salaryCheck">
-              Do you want to calculate your salary?
-            </label>
-          </div>
+      <div class="form-check m-2">
+        <input class="form-check-input" type="checkbox" id="salaryCheck">
+        <label class="form-check-label" for="salaryCheck">
+          Do you want to calculate your salary?
+        </label>
+      </div>
 
-          <div class="col-lg-3 m-2">
-            <button class="btn btn-secondary" id="calculateDays">Calculate Days</button>
-          </div>
+      <div class="col-lg-3 m-2">
+        <button class="btn btn-secondary" id="calculateDays">Calculate Days</button>
+      </div>
 
-          <div class="row">
-            <div id="result" class="col-lg-4">
-              
-            </div>
-          </div>
+      <div class="row">
+        <div id="result" class="col-lg-4">
+
+        </div>
+      </div>
 
     </div> <!-- End of container -->
 
- 
-    <div class="container" style="max-width: 800px; margin-top: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); background-color: #f8f9fa;">
+
+    <div class="container" style="max-width: 800px; margin-top: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
 
       <h2 class="text-center">Results:</h2>
 
@@ -92,7 +161,7 @@
 
     </div> <!-- End of container -->
 
-    <div class="container" style="max-width: 800px; margin-top: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); background-color: #f8f9fa;">
+    <div class="container" style="max-width: 800px; margin-top: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
       <h2 class="text-center">How to Use</h2>
       <p>1. Select the start and end dates.</p>
       <p>2. If you want to calculate time, check the "Do you want to calculate the time?" box and enter the start and end times.</p>
@@ -108,7 +177,7 @@
 
 
 
-</body>
+  </body>
 </html>
 
 <script>
@@ -117,7 +186,29 @@ document.addEventListener("DOMContentLoaded", function() {
   document.querySelector('#startDate').value = new Date().toISOString().split('T')[0];
   document.querySelector('#endDate').value = new Date().toISOString().split('T')[0];
   document.querySelector('#year').innerHTML = new Date().getFullYear();
+
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const htmlElement = document.documentElement;
+
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  htmlElement.setAttribute('data-bs-theme', savedTheme);
+  updateThemeIcon(savedTheme);
+
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = htmlElement.getAttribute('data-bs-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+    htmlElement.setAttribute('data-bs-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+  });
+
 });
+
+function updateThemeIcon(theme) {
+  themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+}
 
 
 document.querySelector('#timeCheck').addEventListener("change", function() {
