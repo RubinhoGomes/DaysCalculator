@@ -3,7 +3,7 @@
 
 ### You can now test the calculator on : 
 
-
+[Days Calculator](https://rubinhogomes.github.io/DaysCalculator/)
 
 ---
 

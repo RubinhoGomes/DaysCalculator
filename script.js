@@ -82,9 +82,9 @@ const countDays = async (data, promiseHolidays) => {
       }
     }
   }
-
-  days++;
   
+  days++;
+
   totalTimeWorked = days * timeDiff;
 
   console.log(days, totalTimeWorked);
@@ -117,19 +117,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     let endTime = document.querySelector("#endTime").value;
     let pauseInterval = document.querySelector("#pauseDuration").value;
     let salaryValue = document.querySelector("#salary").value;
+    let workedHours = document.querySelector("#workedHours").value;
 
     if(isEmpty(startDate) || isEmpty(endDate)) {
-      alert('Preencha a data do inicio e fim');
+      $.toast({
+        heading: 'Error',
+        text: 'Preencha as datas de inicio e fim',
+        position: 'top-right',
+        icon: 'error',
+        stack: false
+      });
       return;
     }
 
     if(isTimeChecked && (isEmpty(startTime) || isEmpty(endTime))){
-      alert('Preencha o tempo do inicio e fim do seu horario')
+      $.toast({
+        heading: 'Error',
+        text: 'Preencha as horas de inicio e fim',
+        position: 'top-right',
+        icon: 'error',
+        stack: false
+      });
       return;
     }
 
-    if(isSalaryChecked && isEmpty(salary)) {
-      alert('Preencha o salario');
+    if(isSalaryChecked && (isEmpty(salaryValue) || isEmpty(workedHours))) {
+      $.toast({
+        heading: 'Error',
+        text: 'Preencha o salario e as horas de trabalho',
+        position: 'top-right',
+        icon: 'error',
+        stack: false
+      });
       return;
     }
 
