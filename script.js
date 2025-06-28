@@ -65,25 +65,29 @@ const countDays = async (data, promiseHolidays) => {
 
   const holidays = await promiseHolidays;
 
+  let daysWithHolidays = days;
+  let daysWithHolidaysAndWeekEnds = days;
   
   if(!isEmpty(holidays)) {
     holidays.forEach(holiday => {
-      days--;
+      daysWithHolidays--;
     });
   }
  
   if(!sameDate) {
-    for (let i = days; i >= 0; i--){
+    for (let i = daysWithHolidaysAndWeekEnds; i >= 0; i--){
       let currentDate = new Date(dataStart);
       currentDate.setDate(currentDate.getDate() + i);
 
       if (currentDate.getDay() == 0 || currentDate.getDay() == 6) {
-        days--;
+        daysWithHolidaysAndWeekEnds--;
       }
     }
   }
   
   days++;
+  daysWithHolidays++;
+  daysWithHolidaysAndWeekEnds++;
 
   totalTimeWorked = days * timeDiff;
 
@@ -92,6 +96,8 @@ const countDays = async (data, promiseHolidays) => {
 
   return {
     days: days,
+    daysHolidays: daysWithHolidays,
+    daysHolidaysWeekEnds: daysWithHolidaysAndWeekEnds,
     hours: totalTimeWorked,
     salary: (salary * totalTimeWorked),
   };
@@ -172,7 +178,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let variable = await countDays(data, holidays);
     let timestamp = new Date().toLocaleString();
 
-    document.querySelector("#resultContainer").appendChild(document.createTextNode(timestamp + " Dias: " + variable.days));
+    document.querySelector("#resultContainer").appendChild(document.createTextNode(timestamp + " Dias: " + variable.days + " Dias com Feriados: " + variable.daysHolidays + " Dias com Feriados e Fins de Semana: " + variable.daysHolidaysWeekEnds));
 
     if (isTimeChecked) {
       document.querySelector("#resultContainer").appendChild(document.createTextNode(" Horas: " + variable.hours));
