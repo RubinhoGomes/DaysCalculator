@@ -147,7 +147,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    if(isSalaryChecked && (isEmpty(salaryValue) || isEmpty(workedHours))) {
+    //if(isSalaryChecked && (isEmpty(salaryValue) && (isEmpty(workedHours) || isTimeChecked))) {
+    if(isSalaryChecked && (isEmpty(salaryValue))) {
       $.toast({
         heading: 'Error',
         text: 'Preencha o salario e as horas de trabalho',
@@ -178,19 +179,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     let variable = await countDays(data, holidays);
     let timestamp = new Date().toLocaleString();
 
-    document.querySelector("#resultContainer").appendChild(document.createElement("tr"));
+    const row = document.createElement('tr');
 
-    document.querySelector("#resultContainer").appendChild(document.createTextNode(timestamp + variable.days + variable.daysHolidays + variable.daysHolidaysWeekEnds));
+    let timestampCell = document.createElement('td');
+    timestampCell.textContent = timestamp;
+    row.appendChild(timestampCell);
 
-    if (isTimeChecked) {
-      document.querySelector("#resultContainer").appendChild(document.createTextNode(" Horas: " + variable.hours));
+    for (const key in variable) {
+
+      if (variable.hasOwnProperty(key)) {
+
+        const cell = document.createElement('td');
+        cell.textContent = variable[key];
+        row.appendChild(cell);
+
+      }
+
     }
 
-
-    if (isSalaryChecked) {
-      document.querySelector("#resultContainer").appendChild(document.createTextNode(" Salario: " + variable.salary));
-    }
-
+    document.querySelector("#resultTableBody").appendChild(row);   
 
   });
 

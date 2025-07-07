@@ -171,14 +171,14 @@
           <thead>
             <tr>
               <th scope="col"></th>
-              <th scope="col">Total Dias</th>
-              <th scope="col">Sem Feriados</th>
-              <th scope="col">Sem Fins-De-Semana</th>
-              <th scope="col">Horas</th>
-              <th scope="col">Salario</th>
+              <th scope="col">Total Days</th> <!-- Total Dias -->
+              <th scope="col">Without Holidays</th> <!-- Sem Feriados -->
+              <th scope="col">Without Weekends</th> <!-- Sem Fins-De-Semana -->
+              <th scope="col">Hours</th> <!-- Horas -->
+              <th scope="col">Salary</th> <!-- Salario -->
             </tr>
           </thead>
-          <tbody id="resultTableBody">
+          <tbody id="resultTableBody" class="text-center">
             <!-- Results will be dynamically inserted here -->
           </tbody>
         </table>
@@ -264,8 +264,8 @@ document.querySelector('#salaryCheck').addEventListener("change", function() {
   document.querySelector('#salary').style.display = isChecked ? 'block' : 'none';
   document.querySelector('#salaryLabel').style.display = isChecked ? 'block' : 'none';
 
-  document.querySelector('#workedHours').style.display = isChecked ? 'block' : 'none';
-  document.querySelector('#workedHoursLabel').style.display = isChecked ? 'block' : 'none';
+  // document.querySelector('#workedHours').style.display = isChecked ? 'block' : 'none';
+  // document.querySelector('#workedHoursLabel').style.display = isChecked ? 'block' : 'none';
 
 });
 
