@@ -178,7 +178,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     let variable = await countDays(data, holidays);
     let timestamp = new Date().toLocaleString();
 
-    document.querySelector("#resultContainer").appendChild(document.createTextNode(timestamp + " Dias: " + variable.days + " Dias com Feriados: " + variable.daysHolidays + " Dias com Feriados e Fins de Semana: " + variable.daysHolidaysWeekEnds));
+    document.querySelector("#resultContainer").appendChild(document.createElement("tr"));
+
+    document.querySelector("#resultContainer").appendChild(document.createTextNode(timestamp + variable.days + variable.daysHolidays + variable.daysHolidaysWeekEnds));
 
     if (isTimeChecked) {
       document.querySelector("#resultContainer").appendChild(document.createTextNode(" Horas: " + variable.hours));
@@ -189,7 +191,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.querySelector("#resultContainer").appendChild(document.createTextNode(" Salario: " + variable.salary));
     }
 
-    document.querySelector("#resultContainer").appendChild(document.createElement("br"));
 
   });
 
