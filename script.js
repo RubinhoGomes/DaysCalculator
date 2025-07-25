@@ -83,12 +83,15 @@ const countDays = async (data, promiseHolidays) => {
         daysWithHolidaysAndWeekEnds--;
       }
     }
+  } else {
+    // If the start and end date are the same, we need to check if it's a weekend
+    if (!dataStart.getDay() == 0 || !dataStart.getDay() == 6) {
+      days++;
+    } else {
+      daysWithHolidaysAndWeekEnds--;
+    }
   }
   
-  days++;
-  daysWithHolidays++;
-  daysWithHolidaysAndWeekEnds++;
-
   totalTimeWorked = days * timeDiff;
 
   console.log(days, totalTimeWorked);

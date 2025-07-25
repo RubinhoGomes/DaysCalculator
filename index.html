@@ -71,14 +71,8 @@
     /* Border ouline color blue */
     .badge-color-blue {
       background-color: #ffffff !important;
-      outline: 2px solid #00BFFF;
+      border: 2px solid #00BFFF;
       border-radius: 8px;
-    }
-
-    .btn-theme {
-      background-color: #ffff !important;
-      outline: 2px solid #FF69B4;
-      color: black;
     }
 
     .nav-title-start {
@@ -86,6 +80,16 @@
       color: #ffff;
       padding: 0 5px;
       border-radius: 8px;
+    }
+
+    .btn-theme {
+      background-color: var(--bs-navbar-bg) !important;
+      border: 2px solid #FF69B4;
+      color: black;
+    }
+    .btn-theme:hover {
+      background-color: #FF69B4 !important;
+      color: white;
     }
 
     /* .nav-title-end { */
