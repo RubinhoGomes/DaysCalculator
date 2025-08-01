@@ -83,12 +83,15 @@ const countDays = async (data, promiseHolidays) => {
         daysWithHolidaysAndWeekEnds--;
       }
     }
+  } else {
+    // If the start and end date are the same, we need to check if it's a weekend
+    if (!dataStart.getDay() == 0 || !dataStart.getDay() == 6) {
+      days++;
+    } else {
+      daysWithHolidaysAndWeekEnds--;
+    }
   }
   
-  days++;
-  daysWithHolidays++;
-  daysWithHolidaysAndWeekEnds++;
-
   totalTimeWorked = days * timeDiff;
 
   console.log(days, totalTimeWorked);
@@ -147,7 +150,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    if(isSalaryChecked && (isEmpty(salaryValue) || isEmpty(workedHours))) {
+    //if(isSalaryChecked && (isEmpty(salaryValue) && (isEmpty(workedHours) || isTimeChecked))) {
+    if(isSalaryChecked && (isEmpty(salaryValue))) {
       $.toast({
         heading: 'Error',
         text: 'Preencha o salario e as horas de trabalho',
@@ -178,18 +182,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     let variable = await countDays(data, holidays);
     let timestamp = new Date().toLocaleString();
 
-    document.querySelector("#resultContainer").appendChild(document.createTextNode(timestamp + " Dias: " + variable.days + " Dias com Feriados: " + variable.daysHolidays + " Dias com Feriados e Fins de Semana: " + variable.daysHolidaysWeekEnds));
+    const row = document.createElement('tr');
 
-    if (isTimeChecked) {
-      document.querySelector("#resultContainer").appendChild(document.createTextNode(" Horas: " + variable.hours));
+    let timestampCell = document.createElement('td');
+    timestampCell.textContent = timestamp;
+    row.appendChild(timestampCell);
+
+    for (const key in variable) {
+
+      if (variable.hasOwnProperty(key)) {
+
+        const cell = document.createElement('td');
+        cell.textContent = variable[key];
+        row.appendChild(cell);
+
+      }
+
     }
 
-
-    if (isSalaryChecked) {
-      document.querySelector("#resultContainer").appendChild(document.createTextNode(" Salario: " + variable.salary));
-    }
-
-    document.querySelector("#resultContainer").appendChild(document.createElement("br"));
+    document.querySelector("#resultTableBody").appendChild(row);   
 
   });
 

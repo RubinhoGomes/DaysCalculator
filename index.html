@@ -10,14 +10,13 @@
     <!-- Bootstrap CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 
-    <!-- Jquery CDN -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
     <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Toast Jquery -->
-    <script src="./dist/jquery.toast.min.js"></script>
-    <link rel="stylesheet" href="./dist/jquery.toast.min.css">
+    <script src="./node_modules/jquery/dist/jquery.js"></script>
+    <script src="./node_modules/jquery-toast-plugin/src/jquery.toast.js"></script>
+    <link rel="stylesheet" href="./node_modules/jquery-toast-plugin/src/jquery.toast.css">
 
     <script src="./script.js" defer></script>
 <style>
@@ -39,9 +38,6 @@
     }
     input {
       color-scheme: --input-color-scheme !important;
-    }
-    .navbar {
-      background-color: var(--bs-navbar-bg) !important;
     }
     .navbar-brand {
       color: var(--bs-navbar-brand-color) !important;
@@ -70,24 +66,56 @@
     }
     button {
       text-shadow: 0 0 1px rgba(0, 0, 0, 0.2); /* Subtle shadow for button text */
-    }    
+    }  
+      
+    /* Border ouline color blue */
+    .badge-color-blue {
+      background-color: #ffffff !important;
+      border: 2px solid #00BFFF;
+      border-radius: 8px;
+    }
+
+    .nav-title-start {
+      background-color: #00BFFF;
+      color: #ffff;
+      padding: 0 5px;
+      border-radius: 8px;
+    }
+
+    .btn-theme {
+      background-color: var(--bs-navbar-bg) !important;
+      border: 2px solid #FF69B4;
+      color: black;
+    }
+    .btn-theme:hover {
+      background-color: #FF69B4 !important;
+      color: white;
+    }
+
+    /* .nav-title-end { */
+    /*   background-color: #ffff; */
+    /*   color: #00BFFF; */
+    /*   padding: 0 5px; */
+    /*   border-radius: 8px; */
+    /* } */
+
     </style>
 
   </head>
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg bg-transparent fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">Days Calculator</a>
+        <a class="navbar-brand" href="/"> <span class="nav-title-start">Days</span> <span class="nav-title-end"> Calculator </span> <sup>  <i class="fas fa-calculator"></i></sup></a><span class="badge badge-color-blue text-dark">v1.0.2</span> <span class="badge bg-danger text-white m-2">BETA</span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <button class="btn btn-outline-secondary" id="themeToggle" aria-label="Toggle theme">
-                <span id="themeIcon">🌙</span>
+              <button class="btn btn-theme" id="themeToggle" aria-label="Toggle theme">
+                <span id="themeIcon">🌙 </span> Toogle <span class="d-none d-lg-inline">Theme</span>
               </button>
             </li>
           </ul>
@@ -160,12 +188,6 @@
         <button class="btn btn-secondary" id="calculateDays">Calculate Days</button>
       </div>
 
-      <div class="row">
-        <div id="result" class="col-lg-4">
-
-        </div>
-      </div>
-
     </div> <!-- End of container -->
 
 
@@ -174,6 +196,22 @@
       <h2 class="text-center">Results:</h2>
 
       <div class="row" id="resultContainer">
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Total Days</th> <!-- Total Dias -->
+              <th scope="col">Without Holidays</th> <!-- Sem Feriados -->
+              <th scope="col">Without Weekends</th> <!-- Sem Fins-De-Semana -->
+              <th scope="col">Hours</th> <!-- Horas -->
+              <th scope="col">Salary</th> <!-- Salario -->
+            </tr>
+          </thead>
+          <tbody id="resultTableBody" class="text-center">
+            <!-- Results will be dynamically inserted here -->
+          </tbody>
+        </table>
 
       </div>
 
@@ -256,8 +294,8 @@ document.querySelector('#salaryCheck').addEventListener("change", function() {
   document.querySelector('#salary').style.display = isChecked ? 'block' : 'none';
   document.querySelector('#salaryLabel').style.display = isChecked ? 'block' : 'none';
 
-  document.querySelector('#workedHours').style.display = isChecked ? 'block' : 'none';
-  document.querySelector('#workedHoursLabel').style.display = isChecked ? 'block' : 'none';
+  // document.querySelector('#workedHours').style.display = isChecked ? 'block' : 'none';
+  // document.querySelector('#workedHoursLabel').style.display = isChecked ? 'block' : 'none';
 
 });
 
